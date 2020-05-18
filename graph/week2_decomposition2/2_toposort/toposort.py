@@ -1,17 +1,27 @@
-#Uses python3
+# Uses python3
 
 import sys
 
+
 def dfs(adj, used, order, x):
-    #write your code here
-    pass
+    for n in adj[x]:
+        if used[n] == 0:
+            order, used = dfs(adj, used, order, n)
+
+    if used[x] == 0:
+        used[x] = 1
+        order.append(x)
+    return order, used
 
 
 def toposort(adj):
     used = [0] * len(adj)
     order = []
-    #write your code here
-    return order
+    for v in range(len(adj)):
+        if used[v] == 0:
+            order, used = dfs(adj, used, order, v)
+    return list(reversed(order))
+
 
 if __name__ == '__main__':
     input = sys.stdin.read()
@@ -25,4 +35,3 @@ if __name__ == '__main__':
     order = toposort(adj)
     for x in order:
         print(x + 1, end=' ')
-

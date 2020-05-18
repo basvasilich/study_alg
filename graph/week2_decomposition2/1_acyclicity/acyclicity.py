@@ -1,10 +1,34 @@
-#Uses python3
+# Uses python3
 
 import sys
 
 
 def acyclic(adj):
+    visited = set()
+    cyclic = set()
+
+    def dfs(v, visited, cyclic):
+        visited.add(v)
+        cyclic.add(v)
+
+        for n in adj[v]:
+            if n not in visited:
+                if dfs(n, visited, cyclic):
+                    return 1
+            elif n in cyclic:
+                return 1
+
+        cyclic.remove(v)
+
+        return 0
+
+    for v in range(len(adj)):
+        if v not in visited:
+            if dfs(v, visited, cyclic):
+                return 1
+
     return 0
+
 
 if __name__ == '__main__':
     input = sys.stdin.read()
