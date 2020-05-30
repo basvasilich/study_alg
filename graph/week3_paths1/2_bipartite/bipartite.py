@@ -1,11 +1,33 @@
-#Uses python3
+# Uses python3
 
 import sys
-import queue
+from collections import deque
+
 
 def bipartite(adj):
-    #write your code here
-    return -1
+    colors = {}
+
+    def helper(node):
+        q = deque()
+        q.append((node, 'r'))
+        while len(q):
+            node, color = q.popleft()
+            adj_node = adj[node]
+            if node in colors and color != colors[node]:
+                return False
+
+            colors[node] = color
+
+            if len(adj_node) > 0:
+                for node in adj_node:
+                    if node not in colors:
+                        q.append((node, 'b' if color == 'r' else 'r'))
+                    elif color == colors[node]:
+                        return False
+        return True
+
+    return 1 if all(helper(node) for node in range(len(adj)) if node not in colors) else 0
+
 
 if __name__ == '__main__':
     input = sys.stdin.read()

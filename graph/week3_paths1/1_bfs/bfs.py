@@ -1,11 +1,32 @@
-#Uses python3
+# Uses python3
 
 import sys
-import queue
+from collections import deque
+
 
 def distance(adj, s, t):
-    #write your code here
+    if len(adj[s]) == 0:
+        return -1
+
+    visited = set()
+    q = deque()
+    q.append((s, 0))
+    visited.add(s)
+
+    while len(q):
+        node, dst = q.popleft()
+        adj_node = adj[node]
+        visited.add(node)
+
+        if len(adj_node) > 0:
+            for node in adj_node:
+                if node == t:
+                    return dst + 1
+                if node not in visited:
+                    q.append((node, dst + 1))
+
     return -1
+
 
 if __name__ == '__main__':
     input = sys.stdin.read()
